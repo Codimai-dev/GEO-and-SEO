@@ -55,7 +55,7 @@ const Auth: React.FC<AuthProps> = ({ mode, onToggleMode, onSuccess }) => {
             <div className="max-w-md w-full bg-[#121212] rounded-2xl border border-[#333] p-8 shadow-[0_0_50px_-10px_rgba(220,38,38,0.15)]">
 
                 <div className="text-center mb-8">
-                    <img src="/CodimAi%20logo.webp" alt="CodimAi" className="h-10 mx-auto mb-4" />
+                    <img src="CodimAi logo.webp" alt="CodimAi" className="h-10 mx-auto mb-4" />
                     <h1 className="text-2xl font-bold text-white mb-2">{isLogin ? 'Welcome back' : 'Create an account'}</h1>
                     <p className="text-gray-400 text-sm">
                         {isLogin ? 'Enter your credentials to access your account' : 'Start optimizing your search presence today'}

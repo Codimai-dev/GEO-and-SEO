@@ -18,7 +18,7 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
       <div className="footer-container">
           <div className="footer-section">
               <img 
-                src="/CodimAi%20Logo%20short.webp" 
+                src="CodimAi Logo short.webp" 
                 alt="CodimAi Logo" 
                 style={{ height: '40px', width: 'auto', marginBottom: '1rem' }} 
               />

@@ -57,7 +57,7 @@ const NavBar: React.FC<NavBarProps> = ({ onNavigate }) => {
     <nav className={`navbar ${navbarHidden ? 'hidden-nav' : ''}`}>
       <div className="nav-container">
         <div className="logo" onClick={() => handleNav('LANDING')} style={{ cursor: 'pointer' }}>
-          <img src="/CodimAi%20logo.webp" alt="CodimAi" style={{ height: '40px', width: 'auto' }} />
+          <img src="CodimAi logo.webp" alt="CodimAi" style={{ height: '40px', width: 'auto' }} />
         </div>
 
         {/* Navigation Wrapper: Contains Links and Buttons */}
