@@ -16,15 +16,17 @@ from .validator import validate_url
 
 app = FastAPI(title="Codimai Backend")
 
-# Configure CORS
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
+origins=[
         "https://geo-and-seo.vercel.app",
         "https://www.geo-and-seo.vercel.app",
         "http://localhost:3000",
         "http://localhost:5173"
-    ],
+    ]
+
+# Configure CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
