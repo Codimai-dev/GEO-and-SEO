@@ -1,6 +1,7 @@
 // API Service for Backend Communication
 
-const API_BASE_URL = ''; // Relative path, handled by Vite proxy
+// Use environment variable for production, empty string for dev (Vite proxy)
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
 
 export interface LoginCredentials {
   email: string;
