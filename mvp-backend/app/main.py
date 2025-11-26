@@ -21,6 +21,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "https://geo-and-seo.vercel.app",
+        "https://www.geo-and-seo.vercel.app",
         "http://localhost:3000",
         "http://localhost:5173"
     ],
