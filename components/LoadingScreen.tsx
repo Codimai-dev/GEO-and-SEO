@@ -33,7 +33,7 @@ const LoadingScreen: React.FC = () => {
           <div className="absolute inset-0 bg-red-600 blur-2xl opacity-20 animate-pulse rounded-full"></div>
           <div className="relative bg-[#2a2a2a] w-32 h-32 rounded-2xl border border-red-500/30 flex items-center justify-center shadow-[0_0_30px_-5px_rgba(220,38,38,0.3)]">
              <img 
-                src="CodimAi logo.webp" 
+                src="/codimai-logo.webp" 
                 alt="CodimAi" 
                 className="w-24 h-auto animate-pulse" 
              />

@@ -55,24 +55,11 @@ const Auth: React.FC<AuthProps> = ({ mode, onToggleMode, onSuccess }) => {
             <div className="max-w-md w-full bg-[#121212] rounded-2xl border border-[#333] p-8 shadow-[0_0_50px_-10px_rgba(220,38,38,0.15)]">
 
                 <div className="text-center mb-8">
-                    <img src="CodimAi logo.webp" alt="CodimAi" className="h-10 mx-auto mb-4" />
+                    <img src="/codimai-logo.webp" alt="CodimAi" className="h-10 mx-auto mb-4" />
                     <h1 className="text-2xl font-bold text-white mb-2">{isLogin ? 'Welcome back' : 'Create an account'}</h1>
                     <p className="text-gray-400 text-sm">
                         {isLogin ? 'Enter your credentials to access your account' : 'Start optimizing your search presence today'}
                     </p>
-                </div>
-
-                <div className="space-y-3 mb-6">
-                    <button className="w-full bg-[#1a1a1a] hover:bg-[#222] border border-[#333] text-white py-2.5 rounded-lg flex items-center justify-center gap-3 transition-colors text-sm font-medium">
-                        <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-5 h-5" alt="Google" />
-                        Continue with Google
-                    </button>
-                </div>
-
-                <div className="flex items-center gap-4 mb-6">
-                    <div className="h-px bg-[#333] flex-1"></div>
-                    <span className="text-xs text-gray-500 uppercase">Or continue with email</span>
-                    <div className="h-px bg-[#333] flex-1"></div>
                 </div>
 
                 <form className="space-y-4" onSubmit={handleSubmit}>
@@ -132,12 +119,6 @@ const Auth: React.FC<AuthProps> = ({ mode, onToggleMode, onSuccess }) => {
                             </button>
                         </div>
                     </div>
-
-                    {isLogin && (
-                        <div className="flex justify-end">
-                            <a href="#" className="text-xs text-red-500 hover:text-red-400">Forgot password?</a>
-                        </div>
-                    )}
 
                     <button
                         type="submit"
