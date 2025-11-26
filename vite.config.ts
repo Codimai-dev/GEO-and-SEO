@@ -9,9 +9,9 @@ export default defineConfig(({ mode }) => {
       port: 3000,
       host: '0.0.0.0',
       proxy: {
-        '/signup': 'http://localhost:8001',
-        '/login': 'http://localhost:8001',
-        '/reports': 'http://localhost:8001',
+        '/signup': 'http://localhost:8002',
+        '/login': 'http://localhost:8002',
+        '/reports': 'http://localhost:8002',
       }
     },
     plugins: [react()],
