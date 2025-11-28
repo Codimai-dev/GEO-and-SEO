@@ -57,7 +57,7 @@ const MetricDetailModal: React.FC<MetricDetailModalProps> = ({ isOpen, onClose, 
           case 'words':
               return (
                   <div className="space-y-6">
-                      <div className="bg-[#1a1a1a] p-4 rounded-xl border border-[#333] flex items-center justify-between">
+                      <div className="bg-[#000] p-4 rounded-xl border border-[#333] flex items-center justify-between">
                            <div>
                                <h4 className="text-gray-400 text-sm mb-1">Total Word Count</h4>
                                <p className="text-3xl font-bold text-white">{report.wordCount}</p>
@@ -82,7 +82,7 @@ const MetricDetailModal: React.FC<MetricDetailModalProps> = ({ isOpen, onClose, 
                               </div>
                               <div className="flex flex-wrap gap-2">
                                   {report.keywords.slice(0, 6).map((k, i) => (
-                                      <span key={i} className="bg-[#1a1a1a] text-gray-400 text-xs px-2 py-1 rounded border border-[#333]">
+                                      <span key={i} className="bg-[#000] text-gray-400 text-xs px-2 py-1 rounded border border-[#333]">
                                           {k.word} ({k.count})
                                       </span>
                                   ))}
@@ -107,11 +107,11 @@ const MetricDetailModal: React.FC<MetricDetailModalProps> = ({ isOpen, onClose, 
               return (
                   <div className="space-y-6">
                       <div className="grid grid-cols-2 gap-4">
-                          <div className="bg-[#1a1a1a] p-4 rounded-xl border border-[#333]">
+                          <div className="bg-[#000] p-4 rounded-xl border border-[#333]">
                                <h4 className="text-gray-400 text-sm mb-1">Internal Links</h4>
                                <p className="text-2xl font-bold text-white">{report.links.internal}</p>
                           </div>
-                          <div className="bg-[#1a1a1a] p-4 rounded-xl border border-[#333]">
+                          <div className="bg-[#000] p-4 rounded-xl border border-[#333]">
                                <h4 className="text-gray-400 text-sm mb-1">External Links</h4>
                                <p className="text-2xl font-bold text-white">{report.links.external}</p>
                           </div>
@@ -143,7 +143,7 @@ const MetricDetailModal: React.FC<MetricDetailModalProps> = ({ isOpen, onClose, 
                const missingAlt = report.images.details.filter(i => !i.alt);
                return (
                   <div className="space-y-6">
-                      <div className="bg-[#1a1a1a] p-4 rounded-xl border border-[#333] flex items-center justify-between">
+                      <div className="bg-[#000] p-4 rounded-xl border border-[#333] flex items-center justify-between">
                            <div>
                                <h4 className="text-gray-400 text-sm mb-1">Missing Alt Text</h4>
                                <p className="text-3xl font-bold text-white">{report.images.withoutAlt}</p>
@@ -165,7 +165,7 @@ const MetricDetailModal: React.FC<MetricDetailModalProps> = ({ isOpen, onClose, 
                                   </div>
                                   
                                   {activeFixId === `img-${idx}` && suggestion ? (
-                                      <div className="mt-2 bg-[#1a1a1a] p-2 rounded border border-brand-500/30 text-sm text-white">
+                                      <div className="mt-2 bg-[#000] p-2 rounded border border-brand-500/30 text-sm text-white">
                                           <div className="flex justify-between items-start">
                                               <span>{suggestion}</span>
                                               <button onClick={handleCopy} className="text-gray-500 hover:text-white">
@@ -204,7 +204,7 @@ const MetricDetailModal: React.FC<MetricDetailModalProps> = ({ isOpen, onClose, 
                        </div>
 
                        <div className="space-y-3">
-                           <div className="bg-[#1a1a1a] p-3 rounded-lg border border-[#333] flex justify-between items-center">
+                           <div className="bg-[#000] p-3 rounded-lg border border-[#333] flex justify-between items-center">
                                <span className="text-sm text-gray-300 flex items-center gap-2"><Smartphone size={16} /> Viewport Meta Tag</span>
                                {report.meta.viewport ? (
                                    <span className="text-xs bg-green-900/20 text-green-500 px-2 py-1 rounded">Configured</span>
@@ -217,7 +217,7 @@ const MetricDetailModal: React.FC<MetricDetailModalProps> = ({ isOpen, onClose, 
                                    </button>
                                )}
                            </div>
-                           <div className="bg-[#1a1a1a] p-3 rounded-lg border border-[#333] flex justify-between items-center">
+                           <div className="bg-[#000] p-3 rounded-lg border border-[#333] flex justify-between items-center">
                                <span className="text-sm text-gray-300 flex items-center gap-2"><Activity size={16} /> Robots.txt</span>
                                {report.meta.robots ? (
                                    <span className="text-xs bg-green-900/20 text-green-500 px-2 py-1 rounded">Found</span>

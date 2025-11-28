@@ -23,7 +23,7 @@ const PerformanceAnalysis: React.FC<PerformanceAnalysisProps> = ({ mobileResult,
   // Theme Colors
   const THEME_RED = '#ff4444';
   const THEME_DARK_RED = '#b91c1c';
-  const THEME_BG_DARK = '#1a1a1a';
+  const THEME_BG_DARK = '#000';
   const THEME_BG_DARKER = '#000000';
   const THEME_TEXT_GRAY = '#9ca3af';
 
@@ -72,7 +72,7 @@ const PerformanceAnalysis: React.FC<PerformanceAnalysisProps> = ({ mobileResult,
       <div className="bg-[#121212] w-full h-full md:h-[90vh] md:max-w-6xl md:rounded-2xl border-0 md:border border-[#333] shadow-2xl flex flex-col overflow-hidden animate-fade-in">
         
         {/* Header */}
-        <div className="p-4 md:p-5 border-b border-[#333] flex justify-between items-center bg-[#000]">
+          <div className="p-4 md:p-5 border-b border-[#333] flex justify-between items-center bg-[#000]">
           <div className="flex items-center gap-3">
             <div className="bg-red-900/20 p-2 rounded-lg border border-red-500/30 hidden sm:block">
               <Gauge className="text-red-500" size={24} />

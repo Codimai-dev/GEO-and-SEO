@@ -50,15 +50,14 @@ const Products: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {products.map((prod, idx) => (
-            <div key={idx} className="bg-[#121212] border border-[#333] rounded-xl p-8 hover:border-red-600/50 hover:bg-[#1a1a1a] transition-all group">
+            <div key={idx} className="bg-[#121212] border border-[#333] rounded-xl p-8 hover:border-red-600/50 hover:bg-[#000] transition-all group">
               <div className="bg-[#222] w-14 h-14 rounded-lg flex items-center justify-center mb-6 group-hover:bg-red-900/20 transition-colors">
                 <prod.icon size={28} className="text-white group-hover:text-red-500 transition-colors" />
               </div>
-              <h3 className="text-2xl font-bold text-white mb-3">{prod.title}</h3>
-              <p className="text-gray-400 leading-relaxed">{prod.desc}</p>
-              <a href="#" className="inline-flex items-center gap-2 text-red-500 font-semibold mt-6 hover:gap-3 transition-all">
-                Learn more <span className="text-lg">→</span>
-              </a>
+              <div className="space-y-3">
+                <h3 className="text-2xl font-bold text-white mb-0">{prod.title}</h3>
+                <p className="text-gray-400 leading-relaxed m-0">{prod.desc}</p>
+              </div>
             </div>
           ))}
         </div>

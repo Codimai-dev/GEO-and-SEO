@@ -1,7 +1,7 @@
 
 
 import React, { useState } from 'react';
-import { Activity, FileCode, Globe, AlertCircle, Gauge, ExternalLink, LayoutList, FileSearch, Brain } from 'lucide-react';
+import { Activity, FileCode, Globe, AlertCircle, Gauge, ExternalLink, LayoutList, FileSearch, Brain, History as HistoryIcon } from 'lucide-react';
 import { SeoReport, AiAnalysisResult, AnalysisStatus } from '../types';
 import ScoreCard from './ScoreCard';
 import StatCard from './StatCard';
@@ -9,6 +9,7 @@ import AnalysisDetails from './AnalysisDetails';
 import AiReport from './AiReport';
 import SiteWideAnalysis from './SiteWideAnalysis';
 import MetricDetailModal from './MetricDetailModal';
+import History from './History';
 
 interface DashboardProps {
   report: SeoReport;
@@ -18,10 +19,11 @@ interface DashboardProps {
   aiResult: AiAnalysisResult | null;
   onRequestAi: () => void;
   onOpenPerformance: () => void;
+    onSelectReport: (report: any) => void;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ report, loading, onReset, aiStatus, aiResult, onRequestAi, onOpenPerformance }) => {
-  const [activeTab, setActiveTab] = useState<'SINGLE' | 'SITE' | 'AI'>('SINGLE');
+const Dashboard: React.FC<DashboardProps> = ({ report, loading, onReset, aiStatus, aiResult, onRequestAi, onOpenPerformance, onSelectReport }) => {
+    const [activeTab, setActiveTab] = useState<'SINGLE' | 'SITE' | 'AI' | 'HISTORY'>('SINGLE');
   const [selectedMetric, setSelectedMetric] = useState<'score' | 'words' | 'links' | 'images' | null>(null);
 
   const handleMetricClick = (type: 'score' | 'words' | 'links' | 'images') => {
@@ -31,7 +33,7 @@ const Dashboard: React.FC<DashboardProps> = ({ report, loading, onReset, aiStatu
   const closeMetricModal = () => setSelectedMetric(null);
 
   return (
-    <div className="min-h-screen bg-[#1a1a1a] text-gray-200 pt-8 pb-20 px-4 md:px-8">
+    <div className="min-h-screen bg-[#000] text-gray-200 pt-8 pb-20 px-4 md:px-8">
         <div className="max-w-7xl mx-auto">
             
             <MetricDetailModal 
@@ -89,6 +91,16 @@ const Dashboard: React.FC<DashboardProps> = ({ report, loading, onReset, aiStatu
                     >
                         <Brain size={16} /> Deep SEO Audit
                         {activeTab === 'AI' && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-500"></div>}
+                    </button>
+                    <button 
+                        onClick={() => setActiveTab('HISTORY')}
+                        className={`pb-3 px-2 flex items-center gap-2 text-sm font-medium transition-colors relative whitespace-nowrap ${
+                            activeTab === 'HISTORY' ? 'text-white' : 'text-gray-500 hover:text-gray-300'
+                        }`}
+                    >
+                        <HistoryIcon size={16} />
+                        <span className="text-sm">History</span>
+                        {activeTab === 'HISTORY' && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-500"></div>}
                     </button>
                 </div>
 
@@ -168,6 +180,12 @@ const Dashboard: React.FC<DashboardProps> = ({ report, loading, onReset, aiStatu
                             loading={aiStatus === AnalysisStatus.LOADING}
                             onRequest={onRequestAi}
                         />
+                    </div>
+                )}
+
+                {activeTab === 'HISTORY' && (
+                    <div className="animate-fade-in">
+                        <History onSelectReport={onSelectReport} />
                     </div>
                 )}
             </div>

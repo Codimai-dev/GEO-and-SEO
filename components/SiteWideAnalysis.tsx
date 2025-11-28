@@ -113,7 +113,7 @@ const SiteWideAnalysis: React.FC<SiteWideAnalysisProps> = ({ pages }) => {
                 </div>
                 
                 <div className="p-6 overflow-y-auto custom-scrollbar">
-                    <div className="flex items-center gap-6 mb-8 bg-[#1a1a1a] p-4 rounded-lg border border-[#333]">
+                    <div className="flex items-center gap-6 mb-8 bg-[#000] p-4 rounded-lg border border-[#333]">
                         <div className="text-center">
                             <p className="text-gray-400 text-xs uppercase font-bold tracking-wider mb-1">Score</p>
                             <p className={`text-3xl font-bold ${selectedPage.score >= 80 ? 'text-green-500' : selectedPage.score >= 50 ? 'text-orange-500' : 'text-red-500'}`}>
@@ -267,7 +267,7 @@ const SiteWideAnalysis: React.FC<SiteWideAnalysisProps> = ({ pages }) => {
                               <tr 
                                 key={idx} 
                                 onClick={() => handleOpenDetails(page)}
-                                className="hover:bg-[#1a1a1a] transition-colors cursor-pointer group"
+                                  className="hover:bg-[#000] transition-colors cursor-pointer group"
                               >
                                   <td className="px-6 py-3">
                                       <div className="flex flex-col">

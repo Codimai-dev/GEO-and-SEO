@@ -1,10 +1,10 @@
 
 import React from 'react';
 
-type PageType = 'LANDING' | 'DASHBOARD' | 'PRODUCTS' | 'FEATURES' | 'PRICING' | 'LOGIN' | 'SIGNUP' | 'CONTACT' | 'SERVICES' | 'BLOG';
+type PageType = 'LANDING' | 'DASHBOARD' | 'PRICING' | 'LOGIN' | 'SIGNUP' | 'CONTACT' | 'HISTORY';
 
 interface FooterProps {
-  onNavigate: (page: PageType) => void;
+  onNavigate: (page: PageType, section?: string) => void;
 }
 
 const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
@@ -34,17 +34,16 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <div className="footer-section">
               <h4 className="footer-heading">Company</h4>
               <ul className="footer-links">
-                  <li><a href="#" onClick={(e) => { e.preventDefault(); handleNav('PRODUCTS'); }} className="hover:text-red-500 transition-colors">Products</a></li>
+                  <li><a href="#" onClick={(e) => { e.preventDefault(); onNavigate('LANDING','products'); setTimeout(()=>{ document.getElementById('products')?.scrollIntoView({behavior:'smooth'}); },80); }} className="hover:text-red-500 transition-colors">Products</a></li>
                   <li><a href="#" onClick={(e) => { e.preventDefault(); handleNav('PRICING'); }} className="hover:text-red-500 transition-colors">Pricing</a></li>
-                  <li><a href="#" onClick={(e) => { e.preventDefault(); handleNav('CONTACT'); }} className="hover:text-red-500 transition-colors">Contact us</a></li>
+                  <li><a href="#" onClick={(e) => { e.preventDefault(); onNavigate('CONTACT'); }} className="hover:text-red-500 transition-colors">Contact us</a></li>
               </ul>
           </div>
 
           <div className="footer-section">
               <h4 className="footer-heading">Resources</h4>
               <ul className="footer-links">
-                  <li><a href="#" onClick={(e) => { e.preventDefault(); handleNav('SERVICES'); }} className="hover:text-red-500 transition-colors">Our Services</a></li>
-                  <li><a href="#" onClick={(e) => { e.preventDefault(); handleNav('BLOG'); }} className="hover:text-red-500 transition-colors">Blog</a></li>
+                  <li><a href="#" onClick={(e) => { e.preventDefault(); onNavigate('LANDING','services'); setTimeout(()=>{ document.getElementById('services')?.scrollIntoView({behavior:'smooth'}); },80); }} className="hover:text-red-500 transition-colors">Our Services</a></li>
                   <li><a href="#" onClick={(e) => { e.preventDefault(); handleNav('LOGIN'); }} className="hover:text-red-500 transition-colors">Log In</a></li>
               </ul>
           </div>

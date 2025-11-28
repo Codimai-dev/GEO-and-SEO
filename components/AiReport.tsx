@@ -116,7 +116,7 @@ const AiReport: React.FC<AiReportProps> = ({ aiResult, loading, onRequest }) => 
                                              }`}>
                                                  {issue.impact}
                                              </span>
-                                             <span className="text-[9px] text-gray-500 bg-[#1a1a1a] px-1.5 py-0.5 rounded">{issue.category}</span>
+                                             <span className="text-[9px] text-gray-500 bg-[#000] px-1.5 py-0.5 rounded">{issue.category}</span>
                                          </div>
                                      </div>
                                      

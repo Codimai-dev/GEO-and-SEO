@@ -1,11 +1,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { apiService } from '../services/apiService';
+// Removed House icon import — we no longer display an icon for Dashboard
 
-type PageType = 'LANDING' | 'DASHBOARD' | 'PRODUCTS' | 'FEATURES' | 'PRICING' | 'LOGIN' | 'SIGNUP' | 'CONTACT' | 'SERVICES' | 'BLOG' | 'HISTORY';
+type PageType = 'LANDING' | 'DASHBOARD' | 'PRICING' | 'LOGIN' | 'SIGNUP' | 'CONTACT' | 'HISTORY';
 
 interface NavBarProps {
-  onNavigate: (page: PageType) => void;
+  onNavigate: (page: PageType, section?: string) => void;
 }
 
 const NavBar: React.FC<NavBarProps> = ({ onNavigate }) => {
@@ -47,6 +48,16 @@ const NavBar: React.FC<NavBarProps> = ({ onNavigate }) => {
     window.scrollTo(0, 0);
   };
 
+  const scrollToSection = (id: string) => {
+    // Ensure landing page is visible then scroll to the section via URL
+    onNavigate('LANDING', id);
+    setMobileMenuOpen(false);
+    setTimeout(() => {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 80);
+  };
+
   const handleLogout = () => {
     apiService.logout();
     setIsAuthenticated(false);
@@ -63,14 +74,17 @@ const NavBar: React.FC<NavBarProps> = ({ onNavigate }) => {
         {/* Navigation Wrapper: Contains Links and Buttons */}
         <div className={`nav-wrapper ${mobileMenuOpen ? 'active' : ''}`}>
           <ul className="nav-menu">
-            <li><a href="#" onClick={(e) => { e.preventDefault(); handleNav('PRODUCTS'); }}>Products</a></li>
-            <li><a href="#" onClick={(e) => { e.preventDefault(); handleNav('FEATURES'); }}>Features</a></li>
-            <li><a href="#" onClick={(e) => { e.preventDefault(); handleNav('PRICING'); }}>Pricing</a></li>
             {isAuthenticated && (
-              <li><a href="#" onClick={(e) => { e.preventDefault(); handleNav('HISTORY'); }} className="text-brand-400 font-medium">History</a></li>
+              <li>
+                <a href="#" onClick={(e) => { e.preventDefault(); handleNav('DASHBOARD'); }} className="font-medium">
+                  Dashboard
+                </a>
+              </li>
             )}
-            <li><a href="#" onClick={(e) => { e.preventDefault(); handleNav('SERVICES'); }}>Services</a></li>
-            <li><a href="#" onClick={(e) => { e.preventDefault(); handleNav('BLOG'); }}>Blog</a></li>
+            <li><a href="products" onClick={(e) => { e.preventDefault(); scrollToSection('products'); }}>Products</a></li>
+            <li><a href="features" onClick={(e) => { e.preventDefault(); scrollToSection('features'); }}>Features</a></li>
+            <li><a href="Pricing" onClick={(e) => { e.preventDefault(); handleNav('PRICING'); }}>Pricing</a></li>
+            <li><a href="#" onClick={(e) => { e.preventDefault(); scrollToSection('services'); }}>Services</a></li>
           </ul>
           <div className="nav-buttons">
             {isAuthenticated ? (

@@ -12,21 +12,18 @@ import NavBar from './components/NavBar';
 import Footer from './components/Footer';
 import LandingPage from './components/LandingPage';
 import Dashboard from './components/Dashboard';
+import DashboardHome from './components/DashboardHome';
 import LoadingScreen from './components/LoadingScreen';
 import PerformanceAnalysis from './components/PerformanceAnalysis';
 
 // Page Components
 import Pricing from './components/Pricing';
-import Products from './components/Products';
-import Features from './components/Features';
 import Contact from './components/Contact';
-import Blog from './components/Blog';
-import Services from './components/Services';
 import Auth from './components/Auth';
 
 import History from './components/History';
 
-type PageType = 'LANDING' | 'DASHBOARD' | 'PRODUCTS' | 'FEATURES' | 'PRICING' | 'LOGIN' | 'SIGNUP' | 'CONTACT' | 'SERVICES' | 'BLOG' | 'HISTORY';
+type PageType = 'LANDING' | 'DASHBOARD' | 'PRICING' | 'LOGIN' | 'SIGNUP' | 'CONTACT' | 'HISTORY';
 
 const App: React.FC = () => {
   // Navigation State
@@ -50,9 +47,45 @@ const App: React.FC = () => {
 
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const handleNavigate = (newPage: PageType) => {
+  // Map PageType to path for URL updates
+  const pageToPath = (p: PageType, section?: string) => {
+    switch (p) {
+      case 'DASHBOARD': return '/dashboard';
+      case 'PRICING': return '/pricing';
+      case 'CONTACT': return '/contact';
+      case 'LOGIN': return '/login';
+      case 'SIGNUP': return '/signup';
+      case 'HISTORY': return '/history';
+      case 'LANDING':
+      default:
+        if (section === 'products') return '/products';
+        if (section === 'features') return '/features';
+        if (section === 'services') return '/services';
+        return '/';
+    }
+  };
+
+  const handleNavigate = (newPage: PageType, section?: string, replace: boolean = false) => {
+    const path = pageToPath(newPage, section);
+    try {
+      if (replace) {
+        window.history.replaceState({}, '', path);
+      } else {
+        window.history.pushState({}, '', path);
+      }
+    } catch (e) {
+      // If push/replace fails (e.g., in some environments), we still set page state
+    }
     setPage(newPage);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // If navigating to a landing section, scroll to the anchor after a small delay
+    if (newPage === 'LANDING' && section) {
+      setTimeout(() => {
+        const el = document.getElementById(section);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 80);
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   const handleHistorySelect = (savedReportPayload: any) => {
@@ -67,16 +100,17 @@ const App: React.FC = () => {
       }
     }
     setReport(parsedReport);
-    setPage('DASHBOARD');
+    handleNavigate('DASHBOARD');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleAnalyze = async () => {
-    if (!url) return;
+  const handleAnalyze = async (overrideUrl?: string) => {
+    const target = overrideUrl || url;
+    if (!target) return;
 
     // Enforce Login
     if (!apiService.isAuthenticated()) {
-      setPage('LOGIN');
+      handleNavigate('LOGIN');
       return;
     }
 
@@ -98,11 +132,11 @@ const App: React.FC = () => {
 
     try {
       let htmlContent = '';
-      let targetUrl = url;
+      let targetUrl = target;
 
       try {
         // 1. Fetch Main Page
-        const result = await fetchUrlContent(url);
+        const result = await fetchUrlContent(targetUrl);
         htmlContent = result.content;
         targetUrl = result.finalUrl;
 
@@ -155,7 +189,7 @@ const App: React.FC = () => {
 
         setReport(seoData);
         setStatus(AnalysisStatus.SUCCESS);
-        setPage('DASHBOARD');
+        handleNavigate('DASHBOARD');
 
         // Save report to backend (already authenticated check passed)
         try {
@@ -171,11 +205,11 @@ const App: React.FC = () => {
       } catch (fetchError) {
         console.warn("Fetch failed, falling back to simulation", fetchError);
         // Fallback to Simulation for demo purposes
-        const simulatedReport = generateSimulatedReport(url);
+        const simulatedReport = generateSimulatedReport(targetUrl);
         setReport(simulatedReport);
         setIsSimulated(true);
         setStatus(AnalysisStatus.SUCCESS);
-        setPage('DASHBOARD');
+        handleNavigate('DASHBOARD');
       }
 
     } catch (error) {
@@ -234,9 +268,44 @@ const App: React.FC = () => {
     setErrorMsg(null);
     setIsSimulated(false);
     setUrl('');
-    setPage('LANDING');
+    handleNavigate('LANDING');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  // Parse initial path and mount popstate handler to support URL navigation
+  React.useEffect(() => {
+    const path = window.location.pathname;
+    const pathToPage = (p: string): { page: PageType, section?: string } => {
+      switch (p) {
+        case '/dashboard': return { page: 'DASHBOARD' };
+        case '/pricing': return { page: 'PRICING' };
+        case '/contact': return { page: 'CONTACT' };
+        case '/login': return { page: 'LOGIN' };
+        case '/signup': return { page: 'SIGNUP' };
+        case '/history': return { page: 'HISTORY' };
+        case '/products': return { page: 'LANDING', section: 'products' };
+        case '/features': return { page: 'LANDING', section: 'features' };
+        case '/services': return { page: 'LANDING', section: 'services' };
+        default: return { page: 'LANDING' };
+      }
+    };
+    const result = pathToPage(path);
+    // Replace state instead of push to avoid altering history on initial load
+    handleNavigate(result.page, result.section, true);
+
+    const onPop = () => {
+      const r = pathToPage(window.location.pathname);
+      setPage(r.page);
+      if (r.page === 'LANDING' && r.section) {
+        setTimeout(() => {
+          const el = document.getElementById(r.section);
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 80);
+      }
+    };
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, []);
 
   // Render Content based on current Page state
   const renderContent = () => {
@@ -245,8 +314,8 @@ const App: React.FC = () => {
     switch (page) {
       case 'DASHBOARD':
         if (!report) {
-          setPage('LANDING');
-          return null;
+          // Show a start screen where users can enter a URL and begin analysis after login
+          return <DashboardHome onStart={(u: string) => handleAnalyze(u)} />;
         }
         return (
           <>
@@ -263,18 +332,15 @@ const App: React.FC = () => {
               aiResult={aiResult}
               onRequestAi={handleAiRequest}
               onOpenPerformance={handlePerformanceRequest}
+              onSelectReport={handleHistorySelect}
             />
           </>
         );
       case 'HISTORY': return <History onSelectReport={handleHistorySelect} />;
       case 'PRICING': return <Pricing />;
-      case 'PRODUCTS': return <Products />;
-      case 'FEATURES': return <Features />;
       case 'CONTACT': return <Contact />;
-      case 'BLOG': return <Blog />;
-      case 'SERVICES': return <Services />;
-      case 'LOGIN': return <Auth mode="login" onToggleMode={(mode) => setPage(mode === 'login' ? 'LOGIN' : 'SIGNUP')} onSuccess={() => handleNavigate('LANDING')} />;
-      case 'SIGNUP': return <Auth mode="signup" onToggleMode={(mode) => setPage(mode === 'login' ? 'LOGIN' : 'SIGNUP')} onSuccess={() => handleNavigate('LANDING')} />;
+      case 'LOGIN': return <Auth mode="login" onToggleMode={(mode) => handleNavigate(mode === 'login' ? 'LOGIN' : 'SIGNUP')} onSuccess={() => handleNavigate('DASHBOARD')} />;
+      case 'SIGNUP': return <Auth mode="signup" onToggleMode={(mode) => handleNavigate(mode === 'login' ? 'LOGIN' : 'SIGNUP')} onSuccess={() => handleNavigate('DASHBOARD')} />;
       case 'LANDING':
       default:
         return (
@@ -291,7 +357,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="bg-[#1a1a1a] min-h-screen text-white">
+    <div className="bg-[#000] min-h-screen text-white">
       <NavBar onNavigate={handleNavigate} />
 
       {renderContent()}

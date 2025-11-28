@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { apiService, Report } from '../services/apiService';
+import { apiService, ReportResponse } from '../services/apiService';
 import { Calendar, Link as LinkIcon, ArrowRight, Loader } from 'lucide-react';
 
 interface HistoryProps {
@@ -7,7 +7,7 @@ interface HistoryProps {
 }
 
 const History: React.FC<HistoryProps> = ({ onSelectReport }) => {
-    const [reports, setReports] = useState<Report[]>([]);
+    const [reports, setReports] = useState<ReportResponse[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -29,7 +29,7 @@ const History: React.FC<HistoryProps> = ({ onSelectReport }) => {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-[#1a1a1a] pt-32 px-4 flex justify-center">
+            <div className="min-h-screen bg-[#000] pt-32 px-4 flex justify-center">
                 <div className="flex items-center gap-3 text-brand-400">
                     <Loader className="animate-spin" /> Loading history...
                 </div>
@@ -38,7 +38,7 @@ const History: React.FC<HistoryProps> = ({ onSelectReport }) => {
     }
 
     return (
-        <div className="min-h-screen bg-[#1a1a1a] pt-24 pb-20 px-4 md:px-8">
+            <div className="min-h-screen bg-[#000] pt-24 pb-20 px-4 md:px-8">
             <div className="max-w-4xl mx-auto">
                 <h2 className="text-3xl font-bold text-white mb-8 flex items-center gap-3">
                     <Calendar className="text-brand-500" /> Analysis History
@@ -77,7 +77,7 @@ const History: React.FC<HistoryProps> = ({ onSelectReport }) => {
                                             </span>
                                         </div>
                                     </div>
-                                    <div className="p-2 bg-[#1a1a1a] rounded-full text-gray-400 group-hover:text-brand-400 group-hover:bg-brand-900/20 transition-all">
+                                    <div className="p-2 bg-[#000] rounded-full text-gray-400 group-hover:text-brand-400 group-hover:bg-brand-900/20 transition-all">
                                         <ArrowRight size={20} />
                                     </div>
                                 </div>

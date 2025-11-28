@@ -18,12 +18,12 @@ const Services: React.FC = () => {
                   <div className="bg-red-900/20 p-4 h-fit rounded-xl text-red-500">
                       <Briefcase size={32} />
                   </div>
-                  <div>
-                      <h3 className="text-2xl font-bold mb-3">GEO Consulting</h3>
-                      <p className="text-gray-400 mb-4">
+                  <div className="space-y-3">
+                      <h3 className="text-2xl font-bold mb-0">GEO Consulting</h3>
+                      <p className="text-gray-400 mb-0">
                           Our experts analyze your entire digital footprint to optimize for Generative Engines. We provide a roadmap to become the cited authority in your industry.
                       </p>
-                      <button className="text-red-500 font-semibold hover:text-red-400">Learn more</button>
+                      {/* Learn more removed */}
                   </div>
               </div>
 
@@ -31,12 +31,12 @@ const Services: React.FC = () => {
                   <div className="bg-blue-900/20 p-4 h-fit rounded-xl text-blue-500">
                       <TrendingUp size={32} />
                   </div>
-                  <div>
-                      <h3 className="text-2xl font-bold mb-3">SEO Strategy & Audit</h3>
-                      <p className="text-gray-400 mb-4">
+                  <div className="space-y-3">
+                      <h3 className="text-2xl font-bold mb-0">SEO Strategy & Audit</h3>
+                      <p className="text-gray-400 mb-0">
                           Deep-dive technical audits for sites with 100k+ pages. We handle complex migrations, JS rendering issues, and international SEO structures.
                       </p>
-                      <button className="text-blue-500 font-semibold hover:text-blue-400">Learn more</button>
+                      {/* Learn more removed */}
                   </div>
               </div>
 
@@ -44,12 +44,12 @@ const Services: React.FC = () => {
                   <div className="bg-green-900/20 p-4 h-fit rounded-xl text-green-500">
                       <Code size={32} />
                   </div>
-                  <div>
-                      <h3 className="text-2xl font-bold mb-3">API Integration</h3>
-                      <p className="text-gray-400 mb-4">
+                  <div className="space-y-3">
+                      <h3 className="text-2xl font-bold mb-0">API Integration</h3>
+                      <p className="text-gray-400 mb-0">
                           Integrate CodimAi's analysis engine directly into your CMS or internal dashboards. Custom endpoints for high-volume automated reporting.
                       </p>
-                      <button className="text-green-500 font-semibold hover:text-green-400">View Documentation</button>
+                      {/* View Documentation removed */}
                   </div>
               </div>
 
@@ -57,12 +57,12 @@ const Services: React.FC = () => {
                   <div className="bg-purple-900/20 p-4 h-fit rounded-xl text-purple-500">
                       <Users size={32} />
                   </div>
-                  <div>
-                      <h3 className="text-2xl font-bold mb-3">Corporate Training</h3>
-                      <p className="text-gray-400 mb-4">
+                  <div className="space-y-3">
+                      <h3 className="text-2xl font-bold mb-0">Corporate Training</h3>
+                      <p className="text-gray-400 mb-0">
                           Workshops and training sessions for marketing teams to understand the nuances of Generative AI and its impact on organic search.
                       </p>
-                      <button className="text-purple-500 font-semibold hover:text-purple-400">Schedule Workshop</button>
+                      {/* Schedule Workshop removed */}
                   </div>
               </div>
           </div>

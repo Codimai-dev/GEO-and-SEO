@@ -131,7 +131,7 @@ const AnalysisDetails: React.FC<AnalysisDetailsProps> = ({ report }) => {
                     </thead>
                     <tbody>
                         {report.keywords.slice(0, 5).map((k, i) => (
-                            <tr key={i} className="border-b border-[#222] hover:bg-[#1a1a1a]">
+                            <tr key={i} className="border-b border-[#222] hover:bg-[#000]">
                                 <td className="px-4 md:px-6 py-3 md:py-4 font-medium text-white">{k.word}</td>
                                 <td className="px-4 md:px-6 py-3 md:py-4">{k.count} <span className="text-[10px] text-gray-600">({k.density.toFixed(1)}%)</span></td>
                                 <td className="px-4 md:px-6 py-3 md:py-4"><BoolCheck val={k.inTitle} /></td>
@@ -154,7 +154,7 @@ const AnalysisDetails: React.FC<AnalysisDetailsProps> = ({ report }) => {
                 {/* Facebook / OG */}
                 <div className="space-y-2">
                     <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Facebook / Open Graph</span>
-                    <div className="border border-gray-700 rounded overflow-hidden bg-[#1a1a1a] max-w-sm mx-auto md:mx-0 w-full shadow-lg">
+                    <div className="border border-gray-700 rounded overflow-hidden bg-[#000] max-w-sm mx-auto md:mx-0 w-full shadow-lg">
                         <div className="h-32 md:h-40 bg-[#222] relative flex items-center justify-center overflow-hidden group">
                             {report.social.ogImage ? (
                                 <img src={report.social.ogImage} alt="OG Preview" className="w-full h-full object-cover transition-transform group-hover:scale-105" />

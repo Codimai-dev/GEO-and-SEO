@@ -2,17 +2,19 @@
 import React, { useState } from 'react';
 import { Search, Sparkles, CheckCircle, Target, TrendingUp, ArrowRight } from 'lucide-react';
 import { FadeIn, CountUp } from './Animations';
+import Products from './Products';
+import Services from './Services';
 import { AnalysisStatus } from '../types';
 
-type PageType = 'LANDING' | 'DASHBOARD' | 'PRODUCTS' | 'FEATURES' | 'PRICING' | 'LOGIN' | 'SIGNUP' | 'CONTACT' | 'SERVICES' | 'BLOG';
+type PageType = 'LANDING' | 'DASHBOARD' | 'PRICING' | 'LOGIN' | 'SIGNUP' | 'CONTACT' | 'HISTORY';
 
 interface LandingPageProps {
-  url: string;
-  setUrl: (url: string) => void;
-  onAnalyze: () => void;
-  status: AnalysisStatus;
-  errorMsg: string | null;
-  onNavigate: (page: PageType) => void;
+    url: string;
+    setUrl: (url: string) => void;
+    onAnalyze: () => void;
+    status: AnalysisStatus;
+    errorMsg: string | null;
+    onNavigate: (page: PageType, section?: string) => void;
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({ url, setUrl, onAnalyze, status, errorMsg, onNavigate }) => {
@@ -36,34 +38,37 @@ const LandingPage: React.FC<LandingPageProps> = ({ url, setUrl, onAnalyze, statu
               <h1 className="hero-title">CodimAi - Everything About AI</h1>
               <p className="hero-subtitle">Create SEO and GEO that boosts your brand visibility across search and generative platforms.</p>
               
-              {/* Premium Input Command Center */}
-              <div className="relative mt-10 max-w-2xl mx-auto group">
-                  <div className="absolute -inset-0.5 bg-gradient-to-r from-red-600 to-red-900 rounded-2xl blur opacity-30 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
-                  <div className="relative bg-black/60 backdrop-blur-xl p-2 rounded-2xl border border-white/10 shadow-2xl flex flex-col sm:flex-row gap-2">
-                      <div className="flex-1 relative">
-                          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500" size={20} />
-                          <input 
-                              type="url" 
-                              placeholder="Enter website URL to analyze..." 
-                              className="w-full bg-white/5 border border-transparent focus:border-red-500/50 rounded-xl outline-none text-white placeholder-gray-400 px-12 py-4 text-lg transition-all"
-                              value={url}
-                              onChange={(e) => setUrl(e.target.value)}
-                              onKeyDown={(e) => e.key === 'Enter' && onAnalyze()}
-                          />
-                      </div>
-                      <button 
-                          onClick={onAnalyze} 
-                          disabled={status === AnalysisStatus.LOADING}
-                          className="bg-gradient-to-r from-red-600 to-red-800 hover:from-red-500 hover:to-red-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 sm:w-auto shadow-lg shadow-red-900/40"
-                      >
-                         {status === AnalysisStatus.LOADING ? (
-                             <>Running...</> 
-                         ) : (
-                             <>Analyze <ArrowRight size={20} /></>
-                         )}
-                      </button>
-                  </div>
-              </div>
+                            {/* Infographic Panels (replace URL analyzer) */}
+                            <div className="relative mt-10 max-w-4xl mx-auto">
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    <div className="p-6 rounded-2xl bg-black/60 border border-white/8 text-center">
+                                        <Search size={36} className="mx-auto text-red-500" />
+                                        <h3 className="mt-4 text-xl font-semibold">On-Page SEO</h3>
+                                        <p className="mt-2 text-gray-400 text-sm">Quick insights on titles, headings, metadata and keyword signals.</p>
+                                    </div>
+
+                                    <div className="p-6 rounded-2xl bg-black/60 border border-white/8 text-center">
+                                        <Sparkles size={36} className="mx-auto text-red-500" />
+                                        <h3 className="mt-4 text-xl font-semibold">Generative Engine Optimization</h3>
+                                        <p className="mt-2 text-gray-400 text-sm">Prepare content to surface in AI answers across chat and assistant platforms.</p>
+                                    </div>
+
+                                    <div className="p-6 rounded-2xl bg-black/60 border border-white/8 text-center">
+                                        <Target size={36} className="mx-auto text-red-500" />
+                                        <h3 className="mt-4 text-xl font-semibold">Performance & Core Web Vitals</h3>
+                                        <p className="mt-2 text-gray-400 text-sm">Understand speed and interaction metrics that affect visibility and UX.</p>
+                                    </div>
+                                </div>
+
+                                <div className="mt-6 text-center">
+                                    <button
+                                        className="bg-gradient-to-r from-red-600 to-red-800 text-white px-6 py-3 rounded-full font-semibold inline-flex items-center gap-2"
+                                        onClick={() => { onNavigate('LANDING','products'); setTimeout(()=>{ document.getElementById('products')?.scrollIntoView({behavior:'smooth'}); },80); }}
+                                    >
+                                        Explore Products <ArrowRight size={16} />
+                                    </button>
+                                </div>
+                            </div>
               
               {errorMsg && (
                   <div className="mt-6 animate-fade-in">
@@ -143,37 +148,55 @@ const LandingPage: React.FC<LandingPageProps> = ({ url, setUrl, onAnalyze, statu
               </FadeIn>
           </div>
 
-          <button className="explore-btn group" onClick={() => onNavigate('PRODUCTS')}>
+          <button className="explore-btn group" onClick={() => { onNavigate('LANDING','products'); setTimeout(()=>document.getElementById('products')?.scrollIntoView({behavior:'smooth'}),80); }}>
               Explore CodimAi One <span className="inline-block transition-transform group-hover:translate-x-1 ml-2">→</span>
           </button>
       </section>
 
-      <section className="growth-section">
+    <section className="growth-section pt-[150px] pb-0">
+          <div className="max-w-4xl mx-auto px-4">
           <FadeIn>
               <h2 className="growth-title">The growth engine for Enterprises</h2>
-              <ul className="growth-list">
-                  <li className="flex items-center gap-4 text-left">
+              <ul className="growth-list space-y-4 mt-6">
+                  <li className="flex items-center gap-4 text-left p-4 rounded-xl bg-transparent">
                       <div className="bg-green-500/20 p-1.5 rounded-full">
                           <CheckCircle className="text-green-500" size={20} /> 
                       </div>
-                      Automate SEO and content at scale
+                      <span className="block">Automate SEO and content at scale</span>
                   </li>
-                  <li className="flex items-center gap-4 text-left">
+                  <li className="flex items-center gap-4 text-left p-4 rounded-xl bg-transparent">
                       <div className="bg-green-500/20 p-1.5 rounded-full">
                           <CheckCircle className="text-green-500" size={20} /> 
                       </div>
-                      Forecast traffic, revenue, and ROI accurately
+                      <span className="block">Forecast traffic, revenue, and ROI accurately</span>
                   </li>
-                  <li className="flex items-center gap-4 text-left">
+                  <li className="flex items-center gap-4 text-left p-4 rounded-xl bg-transparent">
                       <div className="bg-green-500/20 p-1.5 rounded-full">
                           <CheckCircle className="text-green-500" size={20} /> 
                       </div>
-                      Optimize for next-gen AI search platforms
+                      <span className="block">Optimize for next-gen AI search platforms</span>
                   </li>
               </ul>
-              <button className="discover-btn" onClick={() => onNavigate('SERVICES')}>Discover more</button>
+                            <div className="mt-6">
+                              <button className="discover-btn mt-2 px-6 py-3 rounded-xl" onClick={() => { onNavigate('LANDING','services'); setTimeout(()=>document.getElementById('services')?.scrollIntoView({behavior:'smooth'}),80); }}>Discover more</button>
+                            </div>
           </FadeIn>
+          </div>
       </section>
+
+            {/* Products Section (embedded) */}
+            <section id="products" className="products-section">
+                <div className="max-w-5xl mx-auto">
+                    <Products />
+                </div>
+            </section>
+
+            {/* Services Section (embedded) */}
+            <section id="services" className="services-section bg-[#000] pb-20">
+                <div className="max-w-5xl mx-auto">
+                    <Services />
+                </div>
+            </section>
 
       <section className="stats-section">
           <div className="stats-container">
