@@ -410,7 +410,7 @@
             width: 100%;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 2.5rem;
             padding: 0.5rem;
         }
@@ -458,6 +458,20 @@
             align-items: center;
             gap: 1rem;
             font-weight: 700;
+        }
+
+        @media (max-width: 320px) {
+            .hero { padding: 3rem 0 5rem; }
+            .hero-title { font-size: 1.6rem; margin-bottom: 1rem; }
+            .hero-subtitle { font-size: 0.95rem; margin-bottom: 1.25rem; padding: 0 0.5rem; }
+
+            .section-title { font-size: 1.25rem; margin-bottom: 1.25rem; }
+            .cards-container { grid-template-columns: 1fr; gap: 1rem; padding: 0.25rem; }
+            .card { padding: 1rem 0.75rem; border-radius: 12px; }
+            .card-title { font-size: 1.125rem; margin-bottom: 0.75rem; }
+            .card p, .card-list li { font-size: 0.9rem; }
+            .explore-btn, .card-btn, .discover-btn { padding: 0.5rem 0.75rem; font-size: 0.9rem; }
+            .banner-text, .intro-title, .intro-subtitle { font-size: 0.95rem; }
         }
 
         .card-list {
