@@ -6,6 +6,9 @@ from dotenv import load_dotenv
 import os
 import traceback
 
+# NEW
+from pyseoanalyzer import analyze
+
 load_dotenv()
 
 from .database import init_db, get_session
@@ -70,7 +73,7 @@ def login(form: OAuth2PasswordRequestForm = Depends(),
     token = create_access_token({"sub": user.email})
     return {"access_token": token, "token_type": "bearer"}
 
-# ---------------- REPORTS ----------------
+# ---------------- JWT VALIDATION ----------------
 
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
@@ -96,6 +99,31 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
     if user is None:
         raise credentials_exception
     return user
+
+# ---------------- PYSEOANALYZER ENDPOINT ----------------
+
+@app.post("/analyze")
+def analyze_site(url: str, current_user: User = Depends(get_current_user)):
+
+    try:
+        validate_url(url)
+
+        result = analyze(
+            site=url,
+            sitemap=None,
+            analyze_headings=True,
+            analyze_extra_tags=True,
+            follow_links=False
+        )
+
+        return {
+            "status": "success",
+            "analysis": result
+        }
+
+    except Exception as e:
+        print("Analyze ERROR:", e)
+        return {"status": "error", "error": str(e)}
 
 # ---------------- REPORTS ----------------
 
