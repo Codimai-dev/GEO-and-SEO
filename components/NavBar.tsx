@@ -6,7 +6,7 @@ import { apiService } from '../services/apiService';
 type PageType = 'LANDING' | 'DASHBOARD' | 'PRICING' | 'LOGIN' | 'SIGNUP' | 'CONTACT' | 'HISTORY';
 
 interface NavBarProps {
-  onNavigate: (page: PageType, section?: string) => void;
+  onNavigate: (page: PageType, section?: string, replace?: boolean, resetReport?: boolean) => void;
 }
 
 const NavBar: React.FC<NavBarProps> = ({ onNavigate }) => {
@@ -43,7 +43,12 @@ const NavBar: React.FC<NavBarProps> = ({ onNavigate }) => {
   }, []);
 
   const handleNav = (page: PageType) => {
-    onNavigate(page);
+    // If navigating to Dashboard explicitly, request a reset so the start screen shows
+    if (page === 'DASHBOARD') {
+      onNavigate(page, undefined, false, true);
+    } else {
+      onNavigate(page);
+    }
     setMobileMenuOpen(false);
     window.scrollTo(0, 0);
   };

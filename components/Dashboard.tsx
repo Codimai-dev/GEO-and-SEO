@@ -12,14 +12,14 @@ import MetricDetailModal from './MetricDetailModal';
 import History from './History';
 
 interface DashboardProps {
-  report: SeoReport;
-  loading: boolean;
-  onReset: (e?: React.MouseEvent) => void;
-  aiStatus: AnalysisStatus;
-  aiResult: AiAnalysisResult | null;
-  onRequestAi: () => void;
-  onOpenPerformance: () => void;
-    onSelectReport: (report: any) => void;
+    report: SeoReport;
+    loading: boolean;
+    onReset: (e?: React.MouseEvent) => void;
+    aiStatus: AnalysisStatus;
+    aiResult: AiAnalysisResult | null;
+    onRequestAi: () => void;
+    onOpenPerformance: (url?: string) => void;
+        onSelectReport: (report: any) => void;
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ report, loading, onReset, aiStatus, aiResult, onRequestAi, onOpenPerformance, onSelectReport }) => {
@@ -141,10 +141,10 @@ const Dashboard: React.FC<DashboardProps> = ({ report, loading, onReset, aiStatu
                                         color={report.images.withoutAlt > 0 ? 'text-brand-500' : 'text-white'}
                                         onClick={() => handleMetricClick('images')}
                                     />
-                                    <div 
-                                      className="bg-[#2a2a2a] p-4 md:p-6 rounded-xl border border-[#333] hover:border-gray-600 hover:bg-[#333] transition-all group h-full flex flex-col justify-between cursor-pointer"
-                                      onClick={onOpenPerformance}
-                                    >
+                                                                        <div 
+                                                                            className="bg-[#2a2a2a] p-4 md:p-6 rounded-xl border border-[#333] hover:border-gray-600 hover:bg-[#333] transition-all group h-full flex flex-col justify-between cursor-pointer"
+                                                                            onClick={() => onOpenPerformance(report.url)}
+                                                                        >
                                       <div className="flex justify-between items-start mb-3 md:mb-4">
                                           <h3 className="text-gray-400 text-xs md:text-sm font-medium uppercase tracking-wider">Performance</h3>
                                           <div className="p-2 bg-[#333] rounded-lg group-hover:bg-[#444] transition-colors text-white">

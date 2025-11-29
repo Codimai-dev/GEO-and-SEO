@@ -39,8 +39,8 @@ const PerformanceAnalysis: React.FC<PerformanceAnalysisProps> = ({ mobileResult,
     const color = getScoreColor(score);
     
     return (
-      <div className="relative w-40 h-40 md:w-48 md:h-48 mx-auto">
-        <ResponsiveContainer width="100%" height="100%">
+      <div className="relative w-40 h-40 md:w-48 md:h-48 mx-auto" style={{ minWidth: 160, minHeight: 160 }}>
+        <ResponsiveContainer width="100%" height="100%" minWidth={160} minHeight={160}>
           <PieChart>
             <Pie
               data={data}

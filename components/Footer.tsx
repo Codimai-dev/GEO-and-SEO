@@ -4,7 +4,7 @@ import React from 'react';
 type PageType = 'LANDING' | 'DASHBOARD' | 'PRICING' | 'LOGIN' | 'SIGNUP' | 'CONTACT' | 'HISTORY';
 
 interface FooterProps {
-  onNavigate: (page: PageType, section?: string) => void;
+  onNavigate: (page: PageType, section?: string, replace?: boolean, resetReport?: boolean) => void;
 }
 
 const Footer: React.FC<FooterProps> = ({ onNavigate }) => {

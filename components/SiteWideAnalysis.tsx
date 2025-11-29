@@ -210,8 +210,8 @@ const SiteWideAnalysis: React.FC<SiteWideAnalysisProps> = ({ pages }) => {
           {/* Chart Section */}
           <div className="lg:col-span-1 bg-[#121212] p-6 rounded-xl border border-[#333] flex flex-col items-center justify-center">
               <h3 className="text-white font-bold mb-6 text-sm uppercase tracking-wider">Health Distribution</h3>
-              <div className="w-full h-48">
-                  <ResponsiveContainer width="100%" height="100%">
+              <div className="w-full h-48" style={{ minWidth: 150, minHeight: 150 }}>
+                  <ResponsiveContainer width="100%" height="100%" minWidth={150} minHeight={150}>
                       <PieChart>
                           <Pie
                               data={scoreDistribution}

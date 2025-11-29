@@ -65,7 +65,7 @@ const App: React.FC = () => {
     }
   };
 
-  const handleNavigate = (newPage: PageType, section?: string, replace: boolean = false) => {
+  const handleNavigate = (newPage: PageType, section?: string, replace: boolean = false, resetReport: boolean = false) => {
     const path = pageToPath(newPage, section);
     try {
       if (replace) {
@@ -77,6 +77,15 @@ const App: React.FC = () => {
       // If push/replace fails (e.g., in some environments), we still set page state
     }
     setPage(newPage);
+    // If caller requested reset, clear any loaded report so DashboardHome shows
+    if (resetReport) {
+      setReport(null);
+      setAiResult(null);
+      setStatus(AnalysisStatus.IDLE);
+      setErrorMsg(null);
+      setIsSimulated(false);
+      setUrl('');
+    }
     // If navigating to a landing section, scroll to the anchor after a small delay
     if (newPage === 'LANDING' && section) {
       setTimeout(() => {
@@ -104,8 +113,28 @@ const App: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // Normalize URL: add https:// if missing, handle various formats
+  const normalizeUrl = (inputUrl: string): string => {
+    let normalized = inputUrl.trim();
+    if (!normalized) return '';
+    
+    // Remove any whitespace
+    normalized = normalized.replace(/\s+/g, '');
+    
+    // If it doesn't start with http:// or https://, add https://
+    if (!/^https?:\/\//i.test(normalized)) {
+      normalized = 'https://' + normalized;
+    }
+    
+    return normalized;
+  };
+
   const handleAnalyze = async (overrideUrl?: string) => {
-    const target = overrideUrl || url;
+    const rawTarget = overrideUrl || url;
+    if (!rawTarget) return;
+    
+    // Normalize the URL to handle example.com, www.example.com, etc.
+    const target = normalizeUrl(rawTarget);
     if (!target) return;
 
     // Enforce Login
@@ -232,8 +261,11 @@ const App: React.FC = () => {
     }
   };
 
-  const handlePerformanceRequest = async () => {
-    if (!url) return;
+  const handlePerformanceRequest = async (targetUrl?: string) => {
+    const target = targetUrl || url || (report ? report.url : '');
+    if (!target) return;
+    // Ensure the URL state is set so subsequent requests and UI elements behave consistently
+    if (!url) setUrl(target);
     setShowPerfModal(true);
 
     // If we already have data, don't re-fetch
@@ -243,8 +275,8 @@ const App: React.FC = () => {
     try {
       // 1. Run PSI for both Mobile and Desktop
       const [mobileData, desktopData] = await Promise.all([
-        runPageSpeedAnalysis(url, process.env.API_KEY, 'mobile'),
-        runPageSpeedAnalysis(url, process.env.API_KEY, 'desktop')
+        runPageSpeedAnalysis(target, process.env.API_KEY, 'mobile'),
+        runPageSpeedAnalysis(target, process.env.API_KEY, 'desktop')
       ]);
 
       setPsiResults({ mobile: mobileData, desktop: desktopData });
@@ -268,7 +300,8 @@ const App: React.FC = () => {
     setErrorMsg(null);
     setIsSimulated(false);
     setUrl('');
-    handleNavigate('LANDING');
+    // Stay on Dashboard to show DashboardHome with analysis form
+    handleNavigate('DASHBOARD');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -315,7 +348,7 @@ const App: React.FC = () => {
       case 'DASHBOARD':
         if (!report) {
           // Show a start screen where users can enter a URL and begin analysis after login
-          return <DashboardHome onStart={(u: string) => handleAnalyze(u)} />;
+          return <DashboardHome onStart={(u: string) => handleAnalyze(u)} onSelectReport={handleHistorySelect} />;
         }
         return (
           <>

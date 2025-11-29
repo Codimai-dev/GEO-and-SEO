@@ -29,7 +29,7 @@ const History: React.FC<HistoryProps> = ({ onSelectReport }) => {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-[#000] pt-32 px-4 flex justify-center">
+            <div className="pt-12 px-4 flex justify-center">
                 <div className="flex items-center gap-3 text-brand-400">
                     <Loader className="animate-spin" /> Loading history...
                 </div>
@@ -38,7 +38,7 @@ const History: React.FC<HistoryProps> = ({ onSelectReport }) => {
     }
 
     return (
-            <div className="min-h-screen bg-[#000] pt-24 pb-20 px-4 md:px-8">
+            <div className="pt-12 pb-20 px-4 md:px-8">
             <div className="max-w-4xl mx-auto">
                 <h2 className="text-3xl font-bold text-white mb-8 flex items-center gap-3">
                     <Calendar className="text-brand-500" /> Analysis History
@@ -73,7 +73,7 @@ const History: React.FC<HistoryProps> = ({ onSelectReport }) => {
                                                 <LinkIcon size={14} /> {report.url}
                                             </span>
                                             <span className="flex items-center gap-1">
-                                                <Calendar size={14} /> {new Date(report.created_at).toLocaleDateString()} {new Date(report.created_at).toLocaleTimeString()}
+                                                <Calendar size={14} /> {new Date(report.created_at).toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata' })} {new Date(report.created_at).toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit' })}
                                             </span>
                                         </div>
                                     </div>

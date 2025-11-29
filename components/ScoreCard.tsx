@@ -37,8 +37,8 @@ const ScoreCard: React.FC<ScoreCardProps> = ({ score, loading, onClick }) => {
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-600 via-red-500 to-white"></div>
       <h2 className="text-gray-400 text-xs md:text-sm font-medium uppercase tracking-wider mb-4 md:mb-6">Overall SEO Health</h2>
       
-      <div className="relative w-56 h-56 md:w-64 md:h-64 mx-auto flex-1 flex items-center justify-center">
-        <ResponsiveContainer width="100%" height="100%">
+      <div className="relative w-56 h-56 md:w-64 md:h-64 mx-auto flex-1 flex items-center justify-center" style={{ minWidth: 200, minHeight: 200 }}>
+        <ResponsiveContainer width="100%" height="100%" minWidth={200} minHeight={200}>
           <PieChart>
             <Pie
               data={data}
