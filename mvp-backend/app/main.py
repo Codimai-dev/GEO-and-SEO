@@ -1,151 +1,50 @@
-from fastapi import FastAPI, Depends, HTTPException
-from fastapi.security import OAuth2PasswordRequestForm
+"""
+CodimAI Backend - Main FastAPI Application
+"""
+from contextlib import asynccontextmanager
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from sqlmodel import Session, select
-from dotenv import load_dotenv
-import os
-import traceback
 
-# NEW
-from pyseoanalyzer import analyze
+# Import configuration
+from app.core.config import settings
+from app.database import create_db_and_tables
+from app.api import api_router
 
-load_dotenv()
 
-from .database import init_db, get_session
-from .models import User, Report
-from .schemas import UserCreate, UserRead, Token, ReportCreate, ReportRead
-from .auth import hash_password, verify_password, create_access_token
-from .validator import validate_url
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Application lifespan events."""
+    # Startup
+    create_db_and_tables()
+    yield
+    # Shutdown
+    pass
 
-app = FastAPI(title="Codimai Backend")
 
-origins=[
-        "https://geo-and-seo.vercel.app",
-        "https://www.geo-and-seo.vercel.app",
-        "http://localhost:3000",
-        "http://localhost:5173"
-    ]
+# Create FastAPI application
+app = FastAPI(
+    title="CodimAI API",
+    description="SEO and Performance Analysis API",
+    version="1.0.0",
+    lifespan=lifespan
+)
 
 # Configure CORS
+allowed_origins = settings.ALLOWED_ORIGINS.split(",") if settings.ALLOWED_ORIGINS else ["http://localhost:3000"]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-@app.on_event("startup")
-def on_startup():
-    init_db()
+# Include API router
+app.include_router(api_router, prefix="/api")
 
-# ---------------- USER AUTH ----------------
 
-@app.post("/signup", response_model=UserRead)
-def signup(data: UserCreate, db: Session = Depends(get_session)):
-    try:
-        exists = db.exec(select(User).where(User.email == data.email)).first()
-        if exists:
-            raise HTTPException(status_code=400, detail="Email already registered")
-
-        user = User(
-            email=data.email,
-            full_name=data.full_name,
-            hashed_password=hash_password(data.password)
-        )
-        db.add(user)
-        db.commit()
-        db.refresh(user)
-        return user
-    except Exception as e:
-        print(f"Error during signup: {e}")
-        traceback.print_exc()
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.post("/login", response_model=Token)
-def login(form: OAuth2PasswordRequestForm = Depends(),
-          db: Session = Depends(get_session)):
-
-    user = db.exec(select(User).where(User.email == form.username)).first()
-    if not user or not verify_password(form.password, user.hashed_password):
-        raise HTTPException(status_code=401, detail="Invalid email or password")
-
-    token = create_access_token({"sub": user.email})
-    return {"access_token": token, "token_type": "bearer"}
-
-# ---------------- JWT VALIDATION ----------------
-
-from fastapi.security import OAuth2PasswordBearer
-from jose import JWTError, jwt
-from .auth import SECRET_KEY, ALGORITHM
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
-
-def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_session)):
-    credentials_exception = HTTPException(
-        status_code=401,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        email: str = payload.get("sub")
-        if email is None:
-            raise credentials_exception
-    except JWTError:
-        raise credentials_exception
-        
-    user = db.exec(select(User).where(User.email == email)).first()
-    if user is None:
-        raise credentials_exception
-    return user
-
-# ---------------- PYSEOANALYZER ENDPOINT ----------------
-
-@app.post("/analyze")
-def analyze_site(url: str, current_user: User = Depends(get_current_user)):
-
-    try:
-        validate_url(url)
-
-        result = analyze(
-            site=url,
-            sitemap=None,
-            analyze_headings=True,
-            analyze_extra_tags=True,
-            follow_links=False
-        )
-
-        return {
-            "status": "success",
-            "analysis": result
-        }
-
-    except Exception as e:
-        print("Analyze ERROR:", e)
-        return {"status": "error", "error": str(e)}
-
-# ---------------- REPORTS ----------------
-
-@app.post("/reports", response_model=ReportRead)
-def create_report(data: ReportCreate,
-                  current_user: User = Depends(get_current_user),
-                  db: Session = Depends(get_session)):
-    validate_url(data.url)
-
-    report = Report(
-        title=data.title,
-        url=data.url,
-        payload=data.payload,
-        owner_id=current_user.id
-    )
-
-    db.add(report)
-    db.commit()
-    db.refresh(report)
-    return report
-
-@app.get("/reports", response_model=list[ReportRead])
-def get_reports(current_user: User = Depends(get_current_user),
-                db: Session = Depends(get_session)):
-    return db.exec(select(Report).where(Report.owner_id == current_user.id)).all()
+@app.get("/health")
+async def health_check():
+    """Health check endpoint."""
+    return {"status": "healthy", "service": "codimai-api"}

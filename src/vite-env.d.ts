@@ -1,9 +1,8 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-  readonly VITE_API_BASE_URL?: string;
-  readonly VITE_GEMINI_API_KEY?: string;
-  readonly VITE_PAGESPEED_API_KEY?: string;
+  // Backend API URL (all secrets are kept on backend)
+  readonly VITE_API_URL?: string;
 }
 
 interface ImportMeta {

@@ -65,6 +65,12 @@ export interface CrawledPage {
   score: number;
   issues: number;
   title: string;
+  issueDetails?: {
+    type: string;
+    label: string;
+    description: string;
+    severity: 'High' | 'Medium' | 'Low';
+  }[];
 }
 
 export interface SeoReport {

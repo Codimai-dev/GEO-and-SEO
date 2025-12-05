@@ -1,41 +1,63 @@
-from pydantic import BaseModel, EmailStr
-from typing import Optional
+"""
+Pydantic schemas for request/response validation.
+"""
+from pydantic import BaseModel, EmailStr, ConfigDict
+from typing import Optional, List
 from datetime import datetime
 
-# ---------- User ----------
+
+# User Schemas
 class UserCreate(BaseModel):
     email: EmailStr
     password: str
     full_name: Optional[str] = None
 
+
 class UserRead(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    
     id: int
-    email: EmailStr
-    full_name: Optional[str]
+    email: str
+    full_name: Optional[str] = None
     is_active: bool
 
-    class Config:
-        orm_mode = True
+
+class LoginRequest(BaseModel):
+    email: EmailStr
+    password: str
 
 
-# ---------- Token ----------
 class Token(BaseModel):
     access_token: str
     token_type: str
 
 
-# ---------- Report ----------
+# Report Schemas
 class ReportCreate(BaseModel):
     title: str
     url: str
     payload: Optional[str] = None
 
+
+class ReportUpdate(BaseModel):
+    title: Optional[str] = None
+
+
 class ReportRead(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    
     id: int
     title: str
     url: str
-    payload: Optional[str]
+    payload: Optional[str] = None
     created_at: datetime
 
-    class Config:
-        orm_mode = True
+
+class PaginatedReports(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    
+    items: List[ReportRead]
+    total: int
+    page: int
+    limit: int
+    pages: int
